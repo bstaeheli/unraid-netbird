@@ -47,7 +47,7 @@ jobs:
         run: |
           new_version="${{ steps.compare.outputs.latest }}"
           new_full="netbird_${new_version}_linux_amd64"
-          checksums_url="https://github.com/netbirdio/netbird/releases/download/v${new_version}/checksums.txt"
+          checksums_url="https://github.com/netbirdio/netbird/releases/download/v${new_version}/netbird_${new_version}_checksums.txt"
           new_sha="$(curl -fsSL "$checksums_url" | grep "${new_full}.tar.gz" | awk '{print $1}')"
           if [ -z "$new_sha" ]; then
             echo "Error: Failed to fetch SHA256 for ${new_full}.tar.gz" >&2
