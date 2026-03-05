@@ -1,5 +1,5 @@
 {
-    "name": "YOUR_GITHUB_USER/unraid-netbird-utils",
+    "name": "bstaeheli/unraid-netbird-utils",
     "description": "NetBird configuration utilities for Unraid",
     "type": "library",
     "license": "GPL-3.0-or-later",
@@ -10,7 +10,7 @@
     },
     "authors": [
         {
-            "name": "Boris"
+            "name": "bstaeheli"
         }
     ],
     "require-dev": {
@@ -29,6 +29,7 @@
     ],
     "require": {
         "edacerton/plugin-utils": "^1.0",
+        "rlanvin/php-ip": "^3.0",
         "php": ">=8.3"
     }
 }

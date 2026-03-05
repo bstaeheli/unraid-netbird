@@ -1,7 +1,7 @@
 {
   "name": "netbird",
   "package_name": "unraid-netbird-utils",
-  "author": "Boris",
+  "author": "bstaeheli",
   "min": "7.0.0",
   "support": "",
   "launch": "Settings/Netbird",

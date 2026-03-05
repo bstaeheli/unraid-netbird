@@ -1,0 +1,29 @@
+categories:
+  - title: "🚀 Features"
+    labels:
+      - "feat"
+  - title: "🐛 Bug Fixes"
+    labels:
+      - "fix"
+  - title: "🧰 Maintenance"
+    labels:
+      - "chore"
+      - "refactor"
+change-template: "- $TITLE ([#$NUMBER]($URL))"
+category-template: "### $TITLE"
+change-title-escapes: '\<*_&'
+template: |
+  $CHANGES
+prerelease: "true"
+include-pre-releases: "true"
+latest: "false"
+exclude-labels:
+  - "docs"
+  - "test"
+  - "ci"
+  - "perf"
+  - "refactor"
+  - "translation"
+replacers:
+  - search: '/^(feat|fix|chore|refactor)(\(.+\))?: /'
+    replace: ""
