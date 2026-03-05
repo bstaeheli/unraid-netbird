@@ -1,0 +1,30 @@
+{
+  "INCLUDE_INTERFACE": {
+    "default": "1",
+    "description": "Adds NetBird interface to Unraid services"
+  },
+  "SYSCTL_IP_FORWARD": {
+    "default": "1",
+    "description": "Enable IP forwarding in sysctl"
+  },
+  "ENABLE_NETBIRD": {
+    "default": "1",
+    "description": "NetBird enabled"
+  },
+  "ADD_PEERS_TO_HOSTS": {
+    "default": "0",
+    "description": "Add NetBird peers to /etc/hosts"
+  },
+  "MANAGEMENT_URL": {
+    "default": "https://api.netbird.io:443",
+    "description": "NetBird management server URL"
+  },
+  "SETUP_KEY": {
+    "default": "",
+    "description": "NetBird setup key for automatic registration"
+  },
+  "ADMIN_URL": {
+    "default": "https://app.netbird.io",
+    "description": "NetBird admin dashboard URL"
+  }
+}

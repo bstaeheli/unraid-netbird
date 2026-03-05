@@ -1,0 +1,12 @@
+.tablesorter .filtered {
+    display: none;
+}
+.tablesorter-filter.disabled {
+  display: none;
+}
+.green-text {
+    color: #4CAF50;
+}
+.orange-text {
+    color: #FF9800;
+}

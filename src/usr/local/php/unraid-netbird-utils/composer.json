@@ -1,0 +1,34 @@
+{
+    "name": "YOUR_GITHUB_USER/unraid-netbird-utils",
+    "description": "NetBird configuration utilities for Unraid",
+    "type": "library",
+    "license": "GPL-3.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "Netbird\\": "unraid-netbird-utils/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Boris"
+        }
+    ],
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.64",
+        "phpstan/phpstan": "^2.1"
+    },
+    "config": {
+        "sort-packages": true,
+        "bin-dir": "../../../../../vendor/bin/"
+    },
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/dkaser/unraid-utils.git"
+        }
+    ],
+    "require": {
+        "edacerton/plugin-utils": "^1.0",
+        "php": ">=8.3"
+    }
+}

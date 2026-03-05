@@ -1,0 +1,10 @@
+{
+  "name": "netbird",
+  "package_name": "unraid-netbird-utils",
+  "author": "Boris",
+  "min": "7.0.0",
+  "support": "",
+  "launch": "Settings/Netbird",
+  "netbirdVersion": "netbird_0.36.4_linux_amd64",
+  "netbirdSHA256": "PLACEHOLDER_SHA256"
+}

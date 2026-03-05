@@ -1,0 +1,38 @@
+{
+    "title": "NetBird",
+    "commands": [
+        {
+            "command": "netbird status",
+            "file": "netbird-status.txt"
+        },
+        {
+            "command": "ls -Rl /usr/local/emhttp/plugins/netbird/",
+            "file": "plugin-files.txt"
+        },
+        {
+            "command": "ls -l /boot/config/plugins/netbird/",
+            "file": "config-files.txt"
+        },
+        {
+            "command": "ip link",
+            "file": "ip-link.txt"
+        },
+        {
+            "command": "ip address",
+            "file": "ip-address.txt"
+        },
+        {
+            "command": "ip route list table all",
+            "file": "ip-route-all.txt"
+        },
+        {
+            "command": "netstat -4nl",
+            "file": "ipv4-listening.txt"
+        }
+    ],
+    "files": [
+        "/boot/config/plugins/netbird/netbird.cfg",
+        "/var/log/netbird*"
+    ],
+    "system_diagnostics": true
+}
