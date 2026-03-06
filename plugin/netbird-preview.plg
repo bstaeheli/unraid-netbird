@@ -6,7 +6,7 @@
   author="bstaeheli"
   version="2026.03.06.1016"
   launch="Settings/Netbird"
-  pluginURL="https://raw.githubusercontent.com/bstaeheli/unraid-netbird/main/plugin/netbird.plg"
+  pluginURL="https://raw.githubusercontent.com/bstaeheli/unraid-netbird/preview/plugin/netbird-preview.plg"
   
   min="7.0.0"
   
@@ -76,8 +76,8 @@ echo "config.json" > /boot/config/plugins/netbird/.gitignore
 ln -sf /usr/local/emhttp/plugins/netbird/bin/netbird /usr/local/sbin/netbird
 
 # remove other branches (e.g., if switching from main to preview)
-rm -f /boot/config/plugins/netbird-preview.plg
-rm -f /var/log/plugins/netbird-preview.plg
+rm -f /boot/config/plugins/netbird.plg
+rm -f /var/log/plugins/netbird.plg
 
 
 # start netbird daemon
