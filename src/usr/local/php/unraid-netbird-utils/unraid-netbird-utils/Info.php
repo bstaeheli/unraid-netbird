@@ -55,19 +55,24 @@ class Info
     {
         $status = $this->status;
 
+        /** @var array<string, mixed> $localPeer */
+        $localPeer = (array)($status['localPeerState'] ?? []);
+        /** @var array<string, mixed> $server */
+        $server = (array)($status['serverState'] ?? []);
+
         $info = new StatusInfo();
 
-        $info->NbVersion    = $status['cliVersion'] ?? $this->tr("unknown");
-        $info->DaemonState  = $status['daemonState'] ?? $this->tr("unknown");
-        $info->LocalIP      = $status['localPeerState']['IP'] ?? $this->tr("unknown");
-        $info->FQDN         = $status['localPeerState']['fqdn'] ?? $this->tr("unknown");
-        $info->PubKey       = $status['localPeerState']['pubKey'] ?? $this->tr("unknown");
-        $info->ServerURL    = $status['serverState']['url'] ?? $this->tr("unknown");
-        $info->ServerOnline = isset($status['serverState']['connected'])
-            ? ($status['serverState']['connected'] ? $this->tr("yes") : $this->tr("no"))
+        $info->NbVersion    = (string)($status['cliVersion'] ?? $this->tr("unknown"));
+        $info->DaemonState  = (string)($status['daemonState'] ?? $this->tr("unknown"));
+        $info->LocalIP      = (string)($localPeer['IP'] ?? $this->tr("unknown"));
+        $info->FQDN         = (string)($localPeer['fqdn'] ?? $this->tr("unknown"));
+        $info->PubKey       = (string)($localPeer['pubKey'] ?? $this->tr("unknown"));
+        $info->ServerURL    = (string)($server['url'] ?? $this->tr("unknown"));
+        $info->ServerOnline = isset($server['connected'])
+            ? ($server['connected'] ? $this->tr("yes") : $this->tr("no"))
             : $this->tr("unknown");
 
-        $serverError = $status['serverState']['error'] ?? '';
+        $serverError = (string)($server['error'] ?? '');
         if ( ! empty($serverError)) {
             $info->Health = $serverError;
         }
@@ -79,14 +84,19 @@ class Info
     {
         $status = $this->status;
 
+        /** @var array<string, mixed> $localPeer */
+        $localPeer = (array)($status['localPeerState'] ?? []);
+        /** @var array<string, mixed> $server */
+        $server = (array)($status['serverState'] ?? []);
+
         $info = new ConnectionInfo();
 
         $info->HostName    = gethostname() ?: $this->tr("unknown");
-        $info->FQDN        = $status['localPeerState']['fqdn'] ?? $this->tr("unknown");
-        $info->NetbirdIP   = $status['localPeerState']['IP'] ?? $this->tr("unknown");
-        $info->DaemonState = $status['daemonState'] ?? $this->tr("unknown");
-        $info->ServerURL   = $status['serverState']['url'] ?? $this->tr("unknown");
-        $info->AuthURL     = $status['authURL'] ?? '';
+        $info->FQDN        = (string)($localPeer['fqdn'] ?? $this->tr("unknown"));
+        $info->NetbirdIP   = (string)($localPeer['IP'] ?? $this->tr("unknown"));
+        $info->DaemonState = (string)($status['daemonState'] ?? $this->tr("unknown"));
+        $info->ServerURL   = (string)($server['url'] ?? $this->tr("unknown"));
+        $info->AuthURL     = (string)($status['authURL'] ?? '');
 
         return $info;
     }
@@ -95,12 +105,15 @@ class Info
     {
         $status = $this->status;
 
+        /** @var array<string, mixed> $localPeer */
+        $localPeer = (array)($status['localPeerState'] ?? []);
+
         $info = new DashboardInfo();
 
         $info->HostName    = gethostname() ?: $this->tr("Unknown");
-        $info->FQDN        = $status['localPeerState']['fqdn'] ?? $this->tr("Unknown");
-        $info->NetbirdIP   = $status['localPeerState']['IP'] ?? $this->tr("Unknown");
-        $info->DaemonState = $status['daemonState'] ?? $this->tr("Unknown");
+        $info->FQDN        = (string)($localPeer['fqdn'] ?? $this->tr("Unknown"));
+        $info->NetbirdIP   = (string)($localPeer['IP'] ?? $this->tr("Unknown"));
+        $info->DaemonState = (string)($status['daemonState'] ?? $this->tr("Unknown"));
         $info->Online      = $this->isConnected() ? $this->tr("yes") : $this->tr("no");
 
         return $info;
@@ -111,36 +124,42 @@ class Info
      */
     public function getPeerStatus(): array
     {
-        $result  = array();
-        $details = $this->status['peers']['details'] ?? array();
+        $result = array();
+
+        /** @var array<string, mixed> $peers */
+        $peers = (array)($this->status['peers'] ?? []);
+        /** @var array<int, array<string, mixed>> $details */
+        $details = (array)($peers['details'] ?? []);
 
         foreach ($details as $peer) {
-            $p = new PeerStatus();
+            /** @var array<string, mixed> $peer */
+            $peer = (array)$peer;
+            $p    = new PeerStatus();
 
-            $p->FQDN   = $peer['fqdn'] ?? '';
-            $p->Name   = $p->FQDN ? rtrim($p->FQDN, '.') : ($peer['pubKey'] ?? '');
-            $p->IP     = $peer['netbirdIp'] ?? '';
-            $p->Status = $peer['status'] ?? '';
+            $p->FQDN   = (string)($peer['fqdn'] ?? '');
+            $p->Name   = $p->FQDN ? rtrim($p->FQDN, '.') : (string)($peer['pubKey'] ?? '');
+            $p->IP     = (string)($peer['netbirdIp'] ?? '');
+            $p->Status = (string)($peer['status'] ?? '');
 
             $isConnected = strtolower($p->Status) === 'connected';
             $p->Online   = $isConnected;
 
             if ($isConnected) {
-                $connType  = $peer['connType'] ?? 'P2P';
+                $connType    = (string)($peer['connType'] ?? 'P2P');
                 $p->ConnType = $connType;
                 $p->Relayed  = strtolower($connType) === 'relay';
 
                 if ($p->Relayed) {
-                    $p->Address = $peer['relayAddress'] ?? '';
+                    $p->Address = (string)($peer['relayAddress'] ?? '');
                 } else {
-                    // For P2P show the remote endpoint if available
-                    $icePair     = $peer['iceCandidateEndpoint'] ?? array();
-                    $p->Address  = $icePair['remote'] ?? '';
+                    /** @var array<string, mixed> $icePair */
+                    $icePair    = (array)($peer['iceCandidateEndpoint'] ?? []);
+                    $p->Address = (string)($icePair['remote'] ?? '');
                 }
             }
 
-            $p->TxBytes = intval($peer['bytesTx'] ?? 0);
-            $p->RxBytes = intval($peer['bytesRx'] ?? 0);
+            $p->TxBytes = intval((string)($peer['bytesTx'] ?? 0));
+            $p->RxBytes = intval((string)($peer['bytesRx'] ?? 0));
 
             $result[] = $p;
         }
@@ -150,24 +169,26 @@ class Info
 
     public function isConnected(): bool
     {
-        $state = strtolower($this->status['daemonState'] ?? '');
+        $state = strtolower((string)($this->status['daemonState'] ?? ''));
         return $state === 'running' || $state === 'connected';
     }
 
     public function needsLogin(): bool
     {
-        $state = strtolower($this->status['daemonState'] ?? '');
+        $state = strtolower((string)($this->status['daemonState'] ?? ''));
         return $state === 'needlogin' || $state === 'need login';
     }
 
     public function getAuthURL(): string
     {
-        return $this->status['authURL'] ?? '';
+        return (string)($this->status['authURL'] ?? '');
     }
 
     public function getNetbirdIP(): string
     {
-        $ip = $this->status['localPeerState']['IP'] ?? '';
+        /** @var array<string, mixed> $localPeer */
+        $localPeer = (array)($this->status['localPeerState'] ?? []);
+        $ip        = (string)($localPeer['IP'] ?? '');
         // Strip CIDR prefix if present
         return explode('/', $ip)[0];
     }
@@ -191,11 +212,15 @@ class Info
 
     public function getPeerCount(): int
     {
-        return intval($this->status['peers']['total'] ?? 0);
+        /** @var array<string, mixed> $peers */
+        $peers = (array)($this->status['peers'] ?? []);
+        return intval((string)($peers['total'] ?? 0));
     }
 
     public function getConnectedPeerCount(): int
     {
-        return intval($this->status['peers']['connected'] ?? 0);
+        /** @var array<string, mixed> $peers */
+        $peers = (array)($this->status['peers'] ?? []);
+        return intval((string)($peers['connected'] ?? 0));
     }
 }
