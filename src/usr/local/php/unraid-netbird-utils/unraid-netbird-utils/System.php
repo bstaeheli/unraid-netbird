@@ -160,7 +160,8 @@ class System extends \EDACerton\PluginUtils\System
         $nbIP = $info->getNetbirdIP();
         /** @var array<string, mixed> $localPeer */
         $localPeer = (array)($info->getStatus()['localPeerState'] ?? []);
-        $fqdn      = (string)($localPeer['fqdn'] ?? '');
+        $fqdnRaw   = $localPeer['fqdn'] ?? null;
+        $fqdn      = is_string($fqdnRaw) ? $fqdnRaw : '';
         if ( ! empty($nbIP) && ! empty($fqdn)) {
             Utils::logwrap("Adding self {$fqdn} with IP {$nbIP} to hosts file");
             self::updateHostsFile(rtrim($fqdn, '.'), $nbIP);

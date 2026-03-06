@@ -39,9 +39,9 @@ class NetbirdCLI
 
     private function run(string $args): string
     {
-        $cmd = self::BINARY . ' ' . $args . ' 2>&1';
+        $cmd    = self::BINARY . ' ' . $args . ' 2>&1';
         $output = shell_exec($cmd);
-        return (string)($output ?: '');
+        return is_string($output) ? $output : '';
     }
 
     /**
@@ -77,13 +77,13 @@ class NetbirdCLI
             throw new \RuntimeException("netbird status returned empty output.");
         }
 
-        /** @var array<string, mixed>|null $decoded */
         $decoded = json_decode($output, true);
 
         if ( ! is_array($decoded)) {
             throw new \RuntimeException("Failed to decode netbird status JSON: " . json_last_error_msg());
         }
 
+        /** @var array<string, mixed> $decoded */
         return $decoded;
     }
 
@@ -145,7 +145,8 @@ class NetbirdCLI
     public function getAuthURL(): string
     {
         $status = $this->getStatusSafe();
-        return (string)($status['authURL'] ?? '');
+        $url    = $status['authURL'] ?? null;
+        return is_string($url) ? $url : '';
     }
 
     /**

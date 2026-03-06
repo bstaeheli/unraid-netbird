@@ -51,7 +51,7 @@ $netbirdStatus  = $netbirdInfo->getStatusInfo();
         echo Utils::printRow($tr->tr("info.connected_via"), $netbirdInfo->connectedViaNetbird() ? $tr->tr("yes") : $tr->tr("no"));
 
         if ( ! empty($netbirdStatus->Health)) {
-            echo Utils::printRow($tr->tr("info.health"), '<span class="error">' . htmlspecialchars($netbirdStatus->Health) . '</span>');
+    echo Utils::printRow($tr->tr("info.health"), '<span class="error">' . htmlspecialchars($netbirdStatus->Health) . '</span>');
         }
         ?>
     </tbody>

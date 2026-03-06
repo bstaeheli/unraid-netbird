@@ -43,5 +43,6 @@ if ( ! $cli->isReady()) {
 }
 
 $status = $cli->getStatusSafe();
-$state  = (string)($status['daemonState'] ?? 'unknown');
+$v      = $status['daemonState'] ?? null;
+$state  = is_string($v) ? $v : 'unknown';
 $utils->logmsg("NetBird daemon state: {$state}");

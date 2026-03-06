@@ -51,6 +51,27 @@ class Info
         return $this->tr->tr($message);
     }
 
+    /**
+     * @param array<string, mixed> $data
+     */
+    private static function strAt(array $data, string $key, string $default = ''): string
+    {
+        $v = $data[$key] ?? null;
+        return is_string($v) ? $v : $default;
+    }
+
+    /**
+     * @param array<string, mixed> $data
+     */
+    private static function intAt(array $data, string $key, int $default = 0): int
+    {
+        $v = $data[$key] ?? null;
+        if (is_int($v)) {
+            return $v;
+        }
+        return is_numeric($v) ? intval($v) : $default;
+    }
+
     public function getStatusInfo(): StatusInfo
     {
         $status = $this->status;
@@ -62,17 +83,17 @@ class Info
 
         $info = new StatusInfo();
 
-        $info->NbVersion    = (string)($status['cliVersion'] ?? $this->tr("unknown"));
-        $info->DaemonState  = (string)($status['daemonState'] ?? $this->tr("unknown"));
-        $info->LocalIP      = (string)($localPeer['IP'] ?? $this->tr("unknown"));
-        $info->FQDN         = (string)($localPeer['fqdn'] ?? $this->tr("unknown"));
-        $info->PubKey       = (string)($localPeer['pubKey'] ?? $this->tr("unknown"));
-        $info->ServerURL    = (string)($server['url'] ?? $this->tr("unknown"));
+        $info->NbVersion    = self::strAt($status, 'cliVersion', $this->tr("unknown"));
+        $info->DaemonState  = self::strAt($status, 'daemonState', $this->tr("unknown"));
+        $info->LocalIP      = self::strAt($localPeer, 'IP', $this->tr("unknown"));
+        $info->FQDN         = self::strAt($localPeer, 'fqdn', $this->tr("unknown"));
+        $info->PubKey       = self::strAt($localPeer, 'pubKey', $this->tr("unknown"));
+        $info->ServerURL    = self::strAt($server, 'url', $this->tr("unknown"));
         $info->ServerOnline = isset($server['connected'])
             ? ($server['connected'] ? $this->tr("yes") : $this->tr("no"))
             : $this->tr("unknown");
 
-        $serverError = (string)($server['error'] ?? '');
+        $serverError = self::strAt($server, 'error');
         if ( ! empty($serverError)) {
             $info->Health = $serverError;
         }
@@ -92,11 +113,11 @@ class Info
         $info = new ConnectionInfo();
 
         $info->HostName    = gethostname() ?: $this->tr("unknown");
-        $info->FQDN        = (string)($localPeer['fqdn'] ?? $this->tr("unknown"));
-        $info->NetbirdIP   = (string)($localPeer['IP'] ?? $this->tr("unknown"));
-        $info->DaemonState = (string)($status['daemonState'] ?? $this->tr("unknown"));
-        $info->ServerURL   = (string)($server['url'] ?? $this->tr("unknown"));
-        $info->AuthURL     = (string)($status['authURL'] ?? '');
+        $info->FQDN        = self::strAt($localPeer, 'fqdn', $this->tr("unknown"));
+        $info->NetbirdIP   = self::strAt($localPeer, 'IP', $this->tr("unknown"));
+        $info->DaemonState = self::strAt($status, 'daemonState', $this->tr("unknown"));
+        $info->ServerURL   = self::strAt($server, 'url', $this->tr("unknown"));
+        $info->AuthURL     = self::strAt($status, 'authURL');
 
         return $info;
     }
@@ -111,9 +132,9 @@ class Info
         $info = new DashboardInfo();
 
         $info->HostName    = gethostname() ?: $this->tr("Unknown");
-        $info->FQDN        = (string)($localPeer['fqdn'] ?? $this->tr("Unknown"));
-        $info->NetbirdIP   = (string)($localPeer['IP'] ?? $this->tr("Unknown"));
-        $info->DaemonState = (string)($status['daemonState'] ?? $this->tr("Unknown"));
+        $info->FQDN        = self::strAt($localPeer, 'fqdn', $this->tr("Unknown"));
+        $info->NetbirdIP   = self::strAt($localPeer, 'IP', $this->tr("Unknown"));
+        $info->DaemonState = self::strAt($status, 'daemonState', $this->tr("Unknown"));
         $info->Online      = $this->isConnected() ? $this->tr("yes") : $this->tr("no");
 
         return $info;
@@ -136,30 +157,30 @@ class Info
             $peer = (array)$peer;
             $p    = new PeerStatus();
 
-            $p->FQDN   = (string)($peer['fqdn'] ?? '');
-            $p->Name   = $p->FQDN ? rtrim($p->FQDN, '.') : (string)($peer['pubKey'] ?? '');
-            $p->IP     = (string)($peer['netbirdIp'] ?? '');
-            $p->Status = (string)($peer['status'] ?? '');
+            $p->FQDN   = self::strAt($peer, 'fqdn');
+            $p->Name   = $p->FQDN ? rtrim($p->FQDN, '.') : self::strAt($peer, 'pubKey');
+            $p->IP     = self::strAt($peer, 'netbirdIp');
+            $p->Status = self::strAt($peer, 'status');
 
             $isConnected = strtolower($p->Status) === 'connected';
             $p->Online   = $isConnected;
 
             if ($isConnected) {
-                $connType    = (string)($peer['connType'] ?? 'P2P');
+                $connType    = self::strAt($peer, 'connType', 'P2P');
                 $p->ConnType = $connType;
                 $p->Relayed  = strtolower($connType) === 'relay';
 
                 if ($p->Relayed) {
-                    $p->Address = (string)($peer['relayAddress'] ?? '');
+                    $p->Address = self::strAt($peer, 'relayAddress');
                 } else {
                     /** @var array<string, mixed> $icePair */
                     $icePair    = (array)($peer['iceCandidateEndpoint'] ?? []);
-                    $p->Address = (string)($icePair['remote'] ?? '');
+                    $p->Address = self::strAt($icePair, 'remote');
                 }
             }
 
-            $p->TxBytes = intval((string)($peer['bytesTx'] ?? 0));
-            $p->RxBytes = intval((string)($peer['bytesRx'] ?? 0));
+            $p->TxBytes = self::intAt($peer, 'bytesTx');
+            $p->RxBytes = self::intAt($peer, 'bytesRx');
 
             $result[] = $p;
         }
@@ -169,26 +190,26 @@ class Info
 
     public function isConnected(): bool
     {
-        $state = strtolower((string)($this->status['daemonState'] ?? ''));
+        $state = strtolower(self::strAt($this->status, 'daemonState'));
         return $state === 'running' || $state === 'connected';
     }
 
     public function needsLogin(): bool
     {
-        $state = strtolower((string)($this->status['daemonState'] ?? ''));
+        $state = strtolower(self::strAt($this->status, 'daemonState'));
         return $state === 'needlogin' || $state === 'need login';
     }
 
     public function getAuthURL(): string
     {
-        return (string)($this->status['authURL'] ?? '');
+        return self::strAt($this->status, 'authURL');
     }
 
     public function getNetbirdIP(): string
     {
         /** @var array<string, mixed> $localPeer */
         $localPeer = (array)($this->status['localPeerState'] ?? []);
-        $ip        = (string)($localPeer['IP'] ?? '');
+        $ip        = self::strAt($localPeer, 'IP');
         // Strip CIDR prefix if present
         return explode('/', $ip)[0];
     }
@@ -199,7 +220,8 @@ class Info
         if (empty($nbIP)) {
             return false;
         }
-        return ($_SERVER['SERVER_ADDR'] ?? '') === $nbIP;
+        $serverAddr = $_SERVER['SERVER_ADDR'] ?? null;
+        return is_string($serverAddr) && $serverAddr === $nbIP;
     }
 
     /**
@@ -214,13 +236,13 @@ class Info
     {
         /** @var array<string, mixed> $peers */
         $peers = (array)($this->status['peers'] ?? []);
-        return intval((string)($peers['total'] ?? 0));
+        return self::intAt($peers, 'total');
     }
 
     public function getConnectedPeerCount(): int
     {
         /** @var array<string, mixed> $peers */
         $peers = (array)($this->status['peers'] ?? []);
-        return intval((string)($peers['connected'] ?? 0));
+        return self::intAt($peers, 'connected');
     }
 }
