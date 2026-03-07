@@ -32,7 +32,7 @@ if ( ! Utils::pageChecks($tr)) {
     return;
 }
 
-$netbirdInfo   = $netbirdInfo ?? new Info($tr);
+$netbirdInfo   = $netbirdInfo   ?? new Info($tr);
 $netbirdConfig = $netbirdConfig ?? new Config();
 $connInfo      = $netbirdInfo->getConnectionInfo();
 
@@ -75,18 +75,18 @@ function netbirdDisconnect() {
     <tbody>
         <?php
         echo Utils::printRow($tr->tr("info.hostname"), htmlspecialchars($connInfo->HostName));
-        echo Utils::printRow($tr->tr("info.fqdn"), htmlspecialchars($connInfo->FQDN));
-        echo Utils::printRow($tr->tr("info.ip"), htmlspecialchars($connInfo->NetbirdIP));
-        echo Utils::printRow($tr->tr("info.daemon_state"), htmlspecialchars($connInfo->DaemonState));
-        echo Utils::printRow($tr->tr("info.server_url"), htmlspecialchars($connInfo->ServerURL));
+echo Utils::printRow($tr->tr("info.fqdn"), htmlspecialchars($connInfo->FQDN));
+echo Utils::printRow($tr->tr("info.ip"), htmlspecialchars($connInfo->NetbirdIP));
+echo Utils::printRow($tr->tr("info.daemon_state"), htmlspecialchars($connInfo->DaemonState));
+echo Utils::printRow($tr->tr("info.server_url"), htmlspecialchars($connInfo->ServerURL));
 
-        if ( ! empty($connInfo->AuthURL)) {
-            echo Utils::printRow(
-                $tr->tr("info.auth_url"),
-                "<a href='" . htmlspecialchars($connInfo->AuthURL) . "' target='_blank'>" . $tr->tr("info.auth_url_link") . "</a>"
-            );
-        }
-        ?>
+if ( ! empty($connInfo->AuthURL)) {
+    echo Utils::printRow(
+        $tr->tr("info.auth_url"),
+        "<a href='" . htmlspecialchars($connInfo->AuthURL) . "' target='_blank'>" . $tr->tr("info.auth_url_link") . "</a>"
+    );
+}
+?>
     </tbody>
 </table>
 

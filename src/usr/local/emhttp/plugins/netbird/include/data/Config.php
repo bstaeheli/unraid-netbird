@@ -40,7 +40,6 @@ switch ($action) {
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
         break;
-
     case 'down':
         try {
             $cli->down();
@@ -49,7 +48,6 @@ switch ($action) {
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
         break;
-
     case 'status':
         try {
             $status = $cli->getStatusSafe();
@@ -58,7 +56,6 @@ switch ($action) {
             echo json_encode(['success' => false, 'error' => $e->getMessage()]);
         }
         break;
-
     default:
         echo json_encode(['success' => false, 'error' => 'Unknown action']);
         break;

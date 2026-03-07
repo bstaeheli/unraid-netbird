@@ -44,7 +44,7 @@ class Config
         $this->AddPeersToHosts  = boolval($saved_config["ADD_PEERS_TO_HOSTS"] ?? "0");
 
         $this->ManagementURL = $saved_config["MANAGEMENT_URL"] ?? "https://api.netbird.io:443";
-        $this->SetupKey      = $saved_config["SETUP_KEY"] ?? "";
-        $this->AdminURL      = $saved_config["ADMIN_URL"] ?? "https://app.netbird.io";
+        $this->SetupKey      = $saved_config["SETUP_KEY"]      ?? "";
+        $this->AdminURL      = $saved_config["ADMIN_URL"]      ?? "https://app.netbird.io";
     }
 }

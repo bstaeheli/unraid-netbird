@@ -37,7 +37,7 @@ if ($netbirdConfig->Enable) {
         $netbirdInfo     = $netbirdInfo ?? new Info($tr);
         $netbirdDashInfo = $netbirdInfo->getDashboardInfo();
 
-        $netbird_dashboard  = Utils::printDash($tr->tr("info.online"), $netbirdDashInfo->Online);
+        $netbird_dashboard = Utils::printDash($tr->tr("info.online"), $netbirdDashInfo->Online);
         $netbird_dashboard .= Utils::printDash($tr->tr("info.hostname"), $netbirdDashInfo->HostName);
         $netbird_dashboard .= Utils::printDash($tr->tr("info.fqdn"), $netbirdDashInfo->FQDN);
         $netbird_dashboard .= Utils::printDash($tr->tr("info.ip"), $netbirdDashInfo->NetbirdIP);

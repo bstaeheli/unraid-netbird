@@ -19,12 +19,12 @@ namespace Netbird;
 
 class PeerStatus
 {
-    public string $Name      = "";
-    public string $IP        = "";
-    public string $FQDN      = "";
-    public string $Status    = "";
-    public string $ConnType  = "";
-    public string $Address   = "";
+    public string $Name     = "";
+    public string $IP       = "";
+    public string $FQDN     = "";
+    public string $Status   = "";
+    public string $ConnType = "";
+    public string $Address  = "";
 
     public bool $Online  = false;
     public bool $Relayed = false;

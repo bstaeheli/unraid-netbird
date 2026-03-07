@@ -29,8 +29,8 @@ if ( ! Utils::pageChecks($tr)) {
     return;
 }
 
-$netbirdInfo    = $netbirdInfo ?? new Info($tr);
-$netbirdStatus  = $netbirdInfo->getStatusInfo();
+$netbirdInfo   = $netbirdInfo ?? new Info($tr);
+$netbirdStatus = $netbirdInfo->getStatusInfo();
 ?>
 <table class="unraid t1">
     <thead>
@@ -42,17 +42,17 @@ $netbirdStatus  = $netbirdInfo->getStatusInfo();
     <tbody>
         <?php
         echo Utils::printRow($tr->tr("info.version"), htmlspecialchars($netbirdStatus->NbVersion));
-        echo Utils::printRow($tr->tr("info.daemon_state"), htmlspecialchars($netbirdStatus->DaemonState));
-        echo Utils::printRow($tr->tr("info.server_url"), htmlspecialchars($netbirdStatus->ServerURL));
-        echo Utils::printRow($tr->tr("info.server_connected"), htmlspecialchars($netbirdStatus->ServerOnline));
-        echo Utils::printRow($tr->tr("info.ip"), htmlspecialchars($netbirdStatus->LocalIP));
-        echo Utils::printRow($tr->tr("info.fqdn"), htmlspecialchars($netbirdStatus->FQDN));
-        echo Utils::printRow($tr->tr("info.pub_key"), '<code>' . htmlspecialchars($netbirdStatus->PubKey) . '</code>');
-        echo Utils::printRow($tr->tr("info.connected_via"), $netbirdInfo->connectedViaNetbird() ? $tr->tr("yes") : $tr->tr("no"));
+echo Utils::printRow($tr->tr("info.daemon_state"), htmlspecialchars($netbirdStatus->DaemonState));
+echo Utils::printRow($tr->tr("info.server_url"), htmlspecialchars($netbirdStatus->ServerURL));
+echo Utils::printRow($tr->tr("info.server_connected"), htmlspecialchars($netbirdStatus->ServerOnline));
+echo Utils::printRow($tr->tr("info.ip"), htmlspecialchars($netbirdStatus->LocalIP));
+echo Utils::printRow($tr->tr("info.fqdn"), htmlspecialchars($netbirdStatus->FQDN));
+echo Utils::printRow($tr->tr("info.pub_key"), '<code>' . htmlspecialchars($netbirdStatus->PubKey) . '</code>');
+echo Utils::printRow($tr->tr("info.connected_via"), $netbirdInfo->connectedViaNetbird() ? $tr->tr("yes") : $tr->tr("no"));
 
-        if ( ! empty($netbirdStatus->Health)) {
+if ( ! empty($netbirdStatus->Health)) {
     echo Utils::printRow($tr->tr("info.health"), '<span class="error">' . htmlspecialchars($netbirdStatus->Health) . '</span>');
-        }
-        ?>
+}
+?>
     </tbody>
 </table>
