@@ -49,16 +49,17 @@ class NetbirdCLI
      */
     public function isReady(): bool
     {
-        // Check if the netbird daemon process is running
-        exec('pgrep -f "netbird service run"', $out, $rc);
-        if ($rc !== 0) {
-            return false;
-        }
-
-        // Try to get status – if it succeeds the daemon is ready
+        // Rely on status output rather than process grep; the WebGUI context may
+        // not always see the process list even when the daemon is reachable.
         try {
             $status = $this->getStatus();
-            return isset($status['daemonState']);
+            if (isset($status['daemonState']) && is_string($status['daemonState'])) {
+                return true;
+            }
+
+            // Fallback for schema variations: any non-empty decoded status means
+            // the CLI can talk to the daemon, so the backend is ready.
+            return ! empty($status);
         } catch (\RuntimeException $e) {
             return false;
         }
@@ -108,12 +109,25 @@ class NetbirdCLI
      * Otherwise, the user must authenticate via the browser using the returned
      * auth URL.
      */
-    public function up(string $managementURL, string $setupKey = ''): void
+    public function up(
+        string $managementURL,
+        string $setupKey = '',
+        bool $allowServerSSH = false,
+        bool $enableSSHRoot = false
+    ): void
     {
         $args = 'up --management-url ' . escapeshellarg($managementURL);
 
         if ( ! empty($setupKey)) {
             $args .= ' --setup-key ' . escapeshellarg($setupKey);
+        }
+
+        if ($allowServerSSH) {
+            $args .= ' --allow-server-ssh';
+
+            if ($enableSSHRoot) {
+                $args .= ' --enable-ssh-root';
+            }
         }
 
         $this->utils->logmsg("Running: netbird {$args}");

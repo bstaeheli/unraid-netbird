@@ -22,6 +22,8 @@ class Config
     public bool $IncludeInterface;
     public bool $IPForward;
     public bool $Enable;
+    public bool $AllowServerSSH;
+    public bool $EnableSSHRoot;
     public bool $AddPeersToHosts;
 
     public string $ManagementURL;
@@ -41,6 +43,8 @@ class Config
         $this->IncludeInterface = boolval($saved_config["INCLUDE_INTERFACE"] ?? "1");
         $this->IPForward        = boolval($saved_config["SYSCTL_IP_FORWARD"] ?? "1");
         $this->Enable           = boolval($saved_config["ENABLE_NETBIRD"] ?? "1");
+        $this->AllowServerSSH   = boolval($saved_config["ALLOW_SERVER_SSH"] ?? "0");
+        $this->EnableSSHRoot    = boolval($saved_config["ENABLE_SSH_ROOT"] ?? "0");
         $this->AddPeersToHosts  = boolval($saved_config["ADD_PEERS_TO_HOSTS"] ?? "0");
 
         $this->ManagementURL = $saved_config["MANAGEMENT_URL"] ?? "https://api.netbird.io:443";

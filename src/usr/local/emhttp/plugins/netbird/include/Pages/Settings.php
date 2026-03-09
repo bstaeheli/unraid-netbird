@@ -88,6 +88,39 @@ if ($netbirdConfig->Enable) {
         </dd>
     </dl>
     <blockquote class='inline_help'><?= $tr->tr("settings.context.ip_forward"); ?></blockquote>
+
+    <dl>
+        <dt><?= $tr->tr("settings.enable_ssh"); ?></dt>
+        <dd>
+            <select name='ALLOW_SERVER_SSH' size='1' class='narrow'>
+                <?= Utils::make_option($netbirdConfig->AllowServerSSH, '1', $tr->tr("yes"));?>
+                <?= Utils::make_option( ! $netbirdConfig->AllowServerSSH, '0', $tr->tr("no"));?>
+            </select>
+        </dd>
+    </dl>
+    <blockquote class='inline_help'><?= $tr->tr("settings.context.enable_ssh"); ?></blockquote>
+
+    <dl>
+        <dt><?= $tr->tr("settings.enable_ssh_root"); ?></dt>
+        <dd>
+            <select name='ENABLE_SSH_ROOT' size='1' class='narrow'>
+                <?= Utils::make_option($netbirdConfig->EnableSSHRoot, '1', $tr->tr("yes"));?>
+                <?= Utils::make_option( ! $netbirdConfig->EnableSSHRoot, '0', $tr->tr("no"));?>
+            </select>
+        </dd>
+    </dl>
+    <blockquote class='inline_help'><?= $tr->tr("settings.context.enable_ssh_root"); ?></blockquote>
+
+    <dl>
+        <dt><?= $tr->tr("settings.hosts"); ?></dt>
+        <dd>
+            <select name='ADD_PEERS_TO_HOSTS' size='1' class='narrow'>
+                <?= Utils::make_option( ! $netbirdConfig->AddPeersToHosts, '0', $tr->tr("no"));?>
+                <?= Utils::make_option($netbirdConfig->AddPeersToHosts, '1', $tr->tr("yes"));?>
+            </select>
+        </dd>
+    </dl>
+    <blockquote class='inline_help'><?= $tr->tr("settings.context.hosts"); ?></blockquote>
 </div>
 
 <table class="unraid tablesorter"><thead><tr><td><?= $tr->tr("settings.connection"); ?></td></tr></thead></table>
@@ -124,8 +157,8 @@ if ($netbirdConfig->Enable) {
 <dl>
     <dt><?= $tr->tr("connection.connect_info"); ?></dt>
     <dd>
-        <button type="button" onclick="netbirdConnect()"<?= $nbDisconnect; ?>><?= $tr->tr("connection.connect"); ?></button>
-        <button type="button" onclick="netbirdDisconnect()"<?= $nbDisconnect; ?>><?= $tr->tr("connection.disconnect"); ?></button>
+        <button type="button" onclick="netbirdConnect()" style="width:auto;display:inline-block;"<?= $nbDisconnect; ?>><?= $tr->tr("connection.connect"); ?></button>
+        <button type="button" onclick="netbirdDisconnect()" style="width:auto;display:inline-block;"<?= $nbDisconnect; ?>><?= $tr->tr("connection.disconnect"); ?></button>
     </dd>
 </dl>
 
@@ -139,17 +172,6 @@ if ($netbirdConfig->Enable) {
 <?php if ($netbirdConfig->Enable && isset($netbirdInfo) && $netbirdInfo->connectedViaNetbird()) { ?>
 <blockquote class='inline_help'><?= $tr->tr("warnings.connected_via_netbird"); ?></blockquote>
 <?php } ?>
-
-<dl>
-    <dt><?= $tr->tr("settings.hosts"); ?></dt>
-    <dd>
-        <select name='ADD_PEERS_TO_HOSTS' size='1' class='narrow'>
-            <?= Utils::make_option( ! $netbirdConfig->AddPeersToHosts, '0', $tr->tr("no"));?>
-            <?= Utils::make_option($netbirdConfig->AddPeersToHosts, '1', $tr->tr("yes"));?>
-        </select>
-    </dd>
-</dl>
-<blockquote class='inline_help'><?= $tr->tr("settings.context.hosts"); ?></blockquote>
 
 <table class="unraid tablesorter"><thead><tr><td><?= $tr->tr("settings.save"); ?></td></tr></thead></table>
 

@@ -30,7 +30,12 @@ $cli    = new NetbirdCLI();
 switch ($action) {
     case 'up':
         try {
-            $cli->up($config->ManagementURL, $config->SetupKey);
+            $cli->up(
+                $config->ManagementURL,
+                $config->SetupKey,
+                $config->AllowServerSSH,
+                $config->EnableSSHRoot
+            );
             // Wait a moment for the daemon to process
             sleep(2);
             $status  = $cli->getStatusSafe();
