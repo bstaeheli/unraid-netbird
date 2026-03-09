@@ -167,8 +167,8 @@ if ($netbirdConfig->Enable) {
 <dl>
     <dt><?= $tr->tr("connection.connect_info"); ?></dt>
     <dd>
-        <button type="button" onclick="netbirdConnect()" style="width:auto !important;display:inline-block !important;"<?= $nbDisconnect; ?>><?= $tr->tr("connection.connect"); ?></button>
-        <button type="button" onclick="netbirdDisconnect()" style="width:auto !important;display:inline-block !important;"<?= $nbDisconnect; ?>><?= $tr->tr("connection.disconnect"); ?></button>
+        <button type="button" class="autowidth" onclick="netbirdConnect()"<?= $nbDisconnect; ?>><?= $tr->tr("connection.connect"); ?></button>
+        <button type="button" class="autowidth" onclick="netbirdDisconnect()"<?= $nbDisconnect; ?>><?= $tr->tr("connection.disconnect"); ?></button>
     </dd>
 </dl>
 

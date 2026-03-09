@@ -10,3 +10,9 @@
 .orange-text {
     color: #FF9800;
 }
+button.autowidth {
+    width: auto !important;
+    display: inline-block !important;
+    min-width: 100px;
+    margin-right: 5px;
+}
