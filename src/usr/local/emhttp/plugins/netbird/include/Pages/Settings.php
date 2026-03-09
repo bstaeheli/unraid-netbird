@@ -132,7 +132,7 @@ if ($netbirdConfig->Enable) {
 <dl>
     <dt><strong><?= $tr->tr("settings.context.save"); ?></strong></dt>
     <dd>
-        <span><input type="submit" name="#apply" value="<?= $tr->tr('Apply'); ?>"><input type="button" id="DONE" value="<?= $tr->tr('Back'); ?>" onclick="done()"></span>
+        <span><input type="submit" name="#apply" value="<?= $tr->tr('apply'); ?>"><input type="button" id="DONE" value="<?= $tr->tr('back'); ?>" onclick="done()"></span>
     </dd>
 </dl>
 </form>
@@ -144,7 +144,7 @@ if ($netbirdConfig->Enable) {
 <dl>
     <dt><?= $tr->tr("settings.context.restart"); ?></dt>
     <dd>
-        <span><input type="submit" value="<?= $tr->tr('Restart'); ?>"></span>
+        <span><input type="submit" value="<?= $tr->tr('restart'); ?>"></span>
     </dd>
 </dl>
 </form>
@@ -157,7 +157,7 @@ if ($netbirdConfig->Enable) {
 <dl>
     <dt><?= $tr->tr("settings.context.diagnostics"); ?></dt>
     <dd>
-        <span><input type="submit" value="<?= $tr->tr('Download'); ?> "></span>
+        <span><input type="submit" value="<?= $tr->tr('download'); ?> "></span>
     </dd>
 </dl>
 </form>
@@ -172,8 +172,8 @@ if ($netbirdConfig->Enable) {
     <dt><?= $tr->tr("settings.context.erase"); ?></dt>
     <dd>
         <span>
-            <input type="button" value="<?= $tr->tr('Erase'); ?>" onclick="requestErase(this)" <?= $nbDisconnect; ?>>
-            <input id="netbird_erase_confirm" type="submit" value="<?= $tr->tr('Confirm'); ?>" style="display: none;">
+            <input type="button" value="<?= $tr->tr('erase'); ?>" onclick="requestErase(this)" <?= $nbDisconnect; ?>>
+            <input id="netbird_erase_confirm" type="submit" value="<?= $tr->tr('confirm'); ?>" style="display: none;">
         </span>
     </dd>
 </dl>

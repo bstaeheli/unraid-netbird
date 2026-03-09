@@ -4,7 +4,7 @@
 <PLUGIN
   name="netbird"
   author="bstaeheli"
-  version="2026.03.06.1016"
+  version="2026.03.09.1054"
   launch="Settings/Netbird"
   pluginURL="https://raw.githubusercontent.com/bstaeheli/unraid-netbird/main/plugin/netbird.plg"
   
@@ -14,6 +14,11 @@
 
 <CHANGES>
 <![CDATA[
+
+### 2026.03.09.1054
+
+- Fix Settings page button labels not rendering.
+- Reduce aggressive auto-refresh when NetBird is not ready.
 
 ### 2026.03.06.1016
 
@@ -46,8 +51,8 @@ For older releases, see https://github.com/bstaeheli/unraid-netbird/releases
 <SHA256>65e3e932cc4709347fd2edaff1f152bd99a116e9142fa3c75e40420374d1dc0c</SHA256>
 </FILE>
 
-<FILE Name="/boot/config/plugins/netbird/unraid-netbird-utils-2026.03.06.1016-noarch-1.txz">
-<URL>https://github.com/bstaeheli/unraid-netbird/releases/download/2026.03.06.1016/unraid-netbird-utils-2026.03.06.1016-noarch-1.txz</URL>
+<FILE Name="/boot/config/plugins/netbird/unraid-netbird-utils-2026.03.09.1054-noarch-1.txz">
+<URL>https://github.com/bstaeheli/unraid-netbird/releases/download/2026.03.09.1054/unraid-netbird-utils-2026.03.09.1054-noarch-1.txz</URL>
 <SHA256>6e3d7121286b549f4730a9e088bce0d580ee711e779bfd030361a4d84bdc589c</SHA256>
 </FILE>
 
@@ -66,7 +71,7 @@ if [ -L "/etc/rc.d/rc.netbird" ]; then
     rm -f /etc/rc.d/rc.netbird
 fi
 
-upgradepkg --install-new /boot/config/plugins/netbird/unraid-netbird-utils-2026.03.06.1016-noarch-1.txz
+upgradepkg --install-new /boot/config/plugins/netbird/unraid-netbird-utils-2026.03.09.1054-noarch-1.txz
 
 mkdir -p /usr/local/emhttp/plugins/netbird/bin
 tar xzf /boot/config/plugins/netbird/netbird_0.66.2_linux_amd64.tar.gz -C /usr/local/emhttp/plugins/netbird/bin
@@ -84,7 +89,7 @@ rm -f /var/log/plugins/netbird-preview.plg
 /usr/local/emhttp/plugins/netbird/restart.sh
 
 # cleanup old versions
-rm -f $(ls /boot/config/plugins/netbird/unraid-netbird-utils-*.txz 2>/dev/null | grep -v '2026.03.06.1016')
+rm -f $(ls /boot/config/plugins/netbird/unraid-netbird-utils-*.txz 2>/dev/null | grep -v '2026.03.09.1054')
 rm -f $(ls /boot/config/plugins/netbird/*.tar.gz 2>/dev/null | grep -v 'netbird_0.66.2_linux_amd64')
 
 # check to see if the config file has been backed up to Unraid Connect
@@ -108,7 +113,7 @@ fi
 echo ""
 echo "----------------------------------------------------"
 echo " netbird has been installed."
-echo " Version: 2026.03.06.1016"
+echo " Version: 2026.03.09.1054"
 echo "----------------------------------------------------"
 echo ""
 ]]>

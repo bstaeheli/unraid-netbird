@@ -5,12 +5,12 @@
   "warning": "Warning",
   "accept": "Accept",
   "cancel": "Cancel",
-  "Apply": "Apply",
-  "Back": "Back",
-  "Restart": "Restart",
-  "Download": "Download",
-  "Erase": "Erase",
-  "Confirm": "Confirm",
+  "apply": "Apply",
+  "back": "Back",
+  "restart": "Restart",
+  "download": "Download",
+  "erase": "Erase",
+  "confirm": "Confirm",
   "status": "Status",
   "enabled": "Enabled",
 
@@ -83,6 +83,6 @@
   "info.auth_url": "Authentication URL:",
   "info.auth_url_link": "Click here to authenticate",
 
-  "warnings.not_ready": "NetBird daemon is not ready. The page will refresh automatically when it becomes available.",
+  "warnings.not_ready": "NetBird daemon is not ready. This page will retry automatically about once per minute; you can also refresh manually.",
   "warnings.connected_via_netbird": "Connect/disconnect actions are disabled because you are currently connected via NetBird. Performing these actions would disconnect you."
 }

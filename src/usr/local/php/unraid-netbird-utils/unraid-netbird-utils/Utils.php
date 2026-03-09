@@ -93,9 +93,18 @@ class Utils extends \EDACerton\PluginUtils\Utils
             echo(<<<EOT
                 <script>
                     $(function() {
-                        setTimeout(function() {
-                            window.location = window.location.href;
-                        }, 5000);
+                        const reloadKey = 'netbird_not_ready_last_reload';
+                        const reloadIntervalMs = 60000;
+                        const now = Date.now();
+                        const lastReload = Number(sessionStorage.getItem(reloadKey) || 0);
+
+                        // Avoid tight reload loops when tabs are preloaded in the background.
+                        if (now - lastReload > reloadIntervalMs) {
+                            sessionStorage.setItem(reloadKey, String(now));
+                            setTimeout(function() {
+                                window.location = window.location.href;
+                            }, 5000);
+                        }
                     });
                 </script>
                 EOT
