@@ -114,8 +114,7 @@ class NetbirdCLI
         string $setupKey = '',
         bool $allowServerSSH = false,
         bool $enableSSHRoot = false
-    ): void
-    {
+    ): void {
         $args = 'up --management-url ' . escapeshellarg($managementURL);
 
         if ( ! empty($setupKey)) {

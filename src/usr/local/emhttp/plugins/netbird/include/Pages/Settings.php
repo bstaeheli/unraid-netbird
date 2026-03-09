@@ -169,7 +169,7 @@ if ($netbirdConfig->Enable) {
 </dl>
 <?php } ?>
 
-<?php if ($netbirdConfig->Enable && isset($netbirdInfo) && $netbirdInfo->connectedViaNetbird()) { ?>
+<?php if ($netbirdConfig->Enable && $netbirdInfo->connectedViaNetbird()) { ?>
 <blockquote class='inline_help'><?= $tr->tr("warnings.connected_via_netbird"); ?></blockquote>
 <?php } ?>
 

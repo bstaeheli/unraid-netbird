@@ -40,8 +40,8 @@ if ($netbirdConfig->Enable) {
         // Check if authentication is needed
         if ($netbirdInfo->needsLogin()) {
             $authURL = $cli->getAuthURL();
-            if (!empty($authURL)) {
-                $authLink = '<a href="' . htmlspecialchars($authURL) . '" target="_blank">' . $tr->tr("info.auth_url_link") . '</a>';
+            if ( ! empty($authURL)) {
+                $authLink          = '<a href="' . htmlspecialchars($authURL) . '" target="_blank">' . $tr->tr("info.auth_url_link") . '</a>';
                 $netbird_dashboard = Utils::printDash($tr->tr("info.daemon_state"), $netbirdDashInfo->DaemonState);
                 $netbird_dashboard .= Utils::printDash($tr->tr("info.auth_url"), $authLink);
             } else {
