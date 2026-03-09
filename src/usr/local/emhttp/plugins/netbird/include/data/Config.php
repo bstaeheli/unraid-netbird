@@ -34,7 +34,8 @@ switch ($action) {
                 $config->ManagementURL,
                 $config->SetupKey,
                 $config->AllowServerSSH,
-                $config->EnableSSHRoot
+                $config->EnableSSHRoot,
+                $config->DisableDNS
             );
             // Wait a moment for the daemon to process
             sleep(2);

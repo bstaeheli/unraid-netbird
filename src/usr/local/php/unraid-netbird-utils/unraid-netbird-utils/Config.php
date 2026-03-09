@@ -25,6 +25,7 @@ class Config
     public bool $AllowServerSSH;
     public bool $EnableSSHRoot;
     public bool $AddPeersToHosts;
+    public bool $DisableDNS;
 
     public string $ManagementURL;
     public string $SetupKey;
@@ -46,6 +47,7 @@ class Config
         $this->AllowServerSSH   = boolval($saved_config["ALLOW_SERVER_SSH"] ?? "0");
         $this->EnableSSHRoot    = boolval($saved_config["ENABLE_SSH_ROOT"] ?? "0");
         $this->AddPeersToHosts  = boolval($saved_config["ADD_PEERS_TO_HOSTS"] ?? "0");
+        $this->DisableDNS       = boolval($saved_config["DISABLE_DNS"] ?? "0");
 
         $this->ManagementURL = $saved_config["MANAGEMENT_URL"] ?? "https://api.netbird.io:443";
         $this->SetupKey      = $saved_config["SETUP_KEY"]      ?? "";

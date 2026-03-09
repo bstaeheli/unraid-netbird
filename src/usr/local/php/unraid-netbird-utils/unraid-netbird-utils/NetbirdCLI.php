@@ -113,7 +113,8 @@ class NetbirdCLI
         string $managementURL,
         string $setupKey = '',
         bool $allowServerSSH = false,
-        bool $enableSSHRoot = false
+        bool $enableSSHRoot = false,
+        bool $disableDNS = false
     ): void {
         $args = 'up --management-url ' . escapeshellarg($managementURL);
 
@@ -127,6 +128,10 @@ class NetbirdCLI
             if ($enableSSHRoot) {
                 $args .= ' --enable-ssh-root';
             }
+        }
+
+        if ($disableDNS) {
+            $args .= ' --disable-dns';
         }
 
         $this->utils->logmsg("Running: netbird {$args}");

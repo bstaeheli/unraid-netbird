@@ -121,7 +121,17 @@ if ($netbirdConfig->Enable) {
         </dd>
     </dl>
     <blockquote class='inline_help'><?= $tr->tr("settings.context.hosts"); ?></blockquote>
-</div>
+
+    <dl>
+        <dt><?= $tr->tr("settings.disable_dns"); ?></dt>
+        <dd>
+            <select name='DISABLE_DNS' size='1' class='narrow'>
+                <?= Utils::make_option( ! $netbirdConfig->DisableDNS, '0', $tr->tr("no"));?>
+                <?= Utils::make_option($netbirdConfig->DisableDNS, '1', $tr->tr("yes"));?>
+            </select>
+        </dd>
+    </dl>
+    <blockquote class='inline_help'><?= $tr->tr("settings.context.disable_dns"); ?></blockquote></div>
 
 <table class="unraid tablesorter"><thead><tr><td><?= $tr->tr("settings.connection"); ?></td></tr></thead></table>
 
@@ -157,8 +167,8 @@ if ($netbirdConfig->Enable) {
 <dl>
     <dt><?= $tr->tr("connection.connect_info"); ?></dt>
     <dd>
-        <button type="button" onclick="netbirdConnect()" style="width:auto;display:inline-block;"<?= $nbDisconnect; ?>><?= $tr->tr("connection.connect"); ?></button>
-        <button type="button" onclick="netbirdDisconnect()" style="width:auto;display:inline-block;"<?= $nbDisconnect; ?>><?= $tr->tr("connection.disconnect"); ?></button>
+        <button type="button" onclick="netbirdConnect()" style="width:auto !important;display:inline-block !important;"<?= $nbDisconnect; ?>><?= $tr->tr("connection.connect"); ?></button>
+        <button type="button" onclick="netbirdDisconnect()" style="width:auto !important;display:inline-block !important;"<?= $nbDisconnect; ?>><?= $tr->tr("connection.disconnect"); ?></button>
     </dd>
 </dl>
 
