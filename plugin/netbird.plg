@@ -4,7 +4,7 @@
 <PLUGIN
   name="netbird"
   author="bstaeheli"
-  version="2026.03.09.1421"
+  version="2026.03.09.1736"
   launch="Settings/Netbird"
   pluginURL="https://raw.githubusercontent.com/bstaeheli/unraid-netbird/main/plugin/netbird.plg"
   
@@ -14,6 +14,11 @@
 
 <CHANGES>
 <![CDATA[
+
+### 2026.03.09.1736
+
+- Add DNS disable option to prevent NetBird from managing system DNS settings
+- Fix Connect/Disconnect button width (now auto-sized instead of full-width)
 
 ### 2026.03.09.1421
 
