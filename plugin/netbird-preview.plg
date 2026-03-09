@@ -17,8 +17,7 @@
 
 ### 2026.03.09.1054
 
-- Fix Settings page button labels not rendering.
-- Reduce aggressive auto-refresh when NetBird is not ready.
+Fix settings labels and reduce aggressive not-ready auto-refresh.
 
 ### 2026.03.06.1016
 
@@ -30,13 +29,6 @@
 ### 2026.03.06.1012
 
 ### 2026.03.06.1012
-
-- Initial release
-- NetBird 0.66.2
-
-### 2026.03.05.1715
-
-### 2026.03.05.1715
 
 - Initial release
 - NetBird 0.66.2
@@ -53,7 +45,7 @@ For older releases, see https://github.com/bstaeheli/unraid-netbird/releases
 
 <FILE Name="/boot/config/plugins/netbird/unraid-netbird-utils-2026.03.09.1054-noarch-1.txz">
 <URL>https://github.com/bstaeheli/unraid-netbird/releases/download/2026.03.09.1054/unraid-netbird-utils-2026.03.09.1054-noarch-1.txz</URL>
-<SHA256>6e3d7121286b549f4730a9e088bce0d580ee711e779bfd030361a4d84bdc589c</SHA256>
+<SHA256>34725f6515a5650d23ee0754a93f6acd4b1fd3e00d743ab48889fb6e6944c133</SHA256>
 </FILE>
 
 <!--
