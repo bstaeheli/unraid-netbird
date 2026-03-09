@@ -34,8 +34,11 @@ if (( ! isset($var)) || ( ! isset($display))) {
 
 // Disable destructive actions when connected via NetBird (would drop the connection)
 $nbDisconnect = " disabled";
+$authURL      = "";
 if ($netbirdConfig->Enable) {
     $netbirdInfo = $netbirdInfo ?? new Info($tr);
+    $connInfo    = $netbirdInfo->getConnectionInfo();
+    $authURL     = $connInfo->AuthURL;
     if ( ! $netbirdInfo->connectedViaNetbird()) {
         $nbDisconnect = "";
     }
@@ -116,6 +119,27 @@ if ($netbirdConfig->Enable) {
 </dl>
 <blockquote class='inline_help'><?= $tr->tr("settings.context.admin_url"); ?></blockquote>
 
+<table class="unraid tablesorter"><thead><tr><td><?= $tr->tr("connection.actions"); ?></td></tr></thead></table>
+
+<dl>
+    <dt><?= $tr->tr("connection.connect_info"); ?></dt>
+    <dd>
+        <button type="button" onclick="netbirdConnect()"<?= $nbDisconnect; ?>><?= $tr->tr("connection.connect"); ?></button>
+        <button type="button" onclick="netbirdDisconnect()"<?= $nbDisconnect; ?>><?= $tr->tr("connection.disconnect"); ?></button>
+    </dd>
+</dl>
+
+<?php if ( ! empty($authURL)) { ?>
+<dl>
+    <dt><?= $tr->tr("info.auth_url"); ?></dt>
+    <dd><a href="<?= htmlspecialchars($authURL); ?>" target="_blank"><?= $tr->tr("info.auth_url_link"); ?></a></dd>
+</dl>
+<?php } ?>
+
+<?php if ($netbirdConfig->Enable && isset($netbirdInfo) && $netbirdInfo->connectedViaNetbird()) { ?>
+<blockquote class='inline_help'><?= $tr->tr("warnings.connected_via_netbird"); ?></blockquote>
+<?php } ?>
+
 <dl>
     <dt><?= $tr->tr("settings.hosts"); ?></dt>
     <dd>
@@ -182,6 +206,28 @@ if ($netbirdConfig->Enable) {
 
 <script src="<?= Utils::auto_v('/webGui/javascript/jquery.switchbutton.js');?>"></script>
 <script>
+    function netbirdConnect() {
+        $.post('/plugins/netbird/include/data/Config.php',
+            { action: 'up' },
+            function(data) {
+                var result = JSON.parse(data);
+                if (result.authURL) {
+                    window.open(result.authURL, '_blank');
+                }
+                setTimeout(function() { window.location.reload(); }, 3000);
+            }
+        );
+    }
+
+    function netbirdDisconnect() {
+        $.post('/plugins/netbird/include/data/Config.php',
+            { action: 'down' },
+            function() {
+                setTimeout(function() { window.location.reload(); }, 3000);
+            }
+        );
+    }
+
     function requestErase(e) {
         e.disabled = true;
         var confirmButton = document.getElementById('netbird_erase_confirm');
