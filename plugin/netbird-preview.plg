@@ -4,7 +4,7 @@
 <PLUGIN
   name="netbird"
   author="bstaeheli"
-  version="2026.03.09.1156"
+  version="v2026.03.09.1156"
   launch="Settings/Netbird"
   pluginURL="https://raw.githubusercontent.com/bstaeheli/unraid-netbird/preview/plugin/netbird-preview.plg"
   
@@ -17,10 +17,14 @@
 
 ### 2026.03.09.1156
 
+### Changes
+
 Adopt Tailscale's authentication approach:
 - UI now accessible when daemon is in NeedsLogin state
-- Display authentication link on dashboard and info page
+- Display authentication link on dashboard and info page when login needed
 - Remove automatic setup key authentication (manual flow preferred)
+
+This release improves the authentication user experience by making the UI accessible even when NetBird needs login, similar to how Tailscale handles authentication. Users will see a clickable authentication link on the dashboard and info page instead of being blocked from accessing the UI.
 
 ### 2026.03.09.1054
 
@@ -29,13 +33,6 @@ Fix settings labels and reduce aggressive not-ready auto-refresh.
 ### 2026.03.06.1016
 
 ### 2026.03.06.1016
-
-- Initial release
-- NetBird 0.66.2
-
-### 2026.03.06.1012
-
-### 2026.03.06.1012
 
 - Initial release
 - NetBird 0.66.2
@@ -50,9 +47,9 @@ For older releases, see https://github.com/bstaeheli/unraid-netbird/releases
 <SHA256>65e3e932cc4709347fd2edaff1f152bd99a116e9142fa3c75e40420374d1dc0c</SHA256>
 </FILE>
 
-<FILE Name="/boot/config/plugins/netbird/unraid-netbird-utils-2026.03.09.1156-noarch-1.txz">
-<URL>https://github.com/bstaeheli/unraid-netbird/releases/download/2026.03.09.1156/unraid-netbird-utils-2026.03.09.1156-noarch-1.txz</URL>
-<SHA256>PLACEHOLDER</SHA256>
+<FILE Name="/boot/config/plugins/netbird/unraid-netbird-utils-v2026.03.09.1156-noarch-1.txz">
+<URL>https://github.com/bstaeheli/unraid-netbird/releases/download/v2026.03.09.1156/unraid-netbird-utils-v2026.03.09.1156-noarch-1.txz</URL>
+<SHA256>48742ee133da21ed46d2f43f5179f7504ebc93425c0e0d8235bbc86067a7bb16</SHA256>
 </FILE>
 
 <!--
@@ -70,7 +67,7 @@ if [ -L "/etc/rc.d/rc.netbird" ]; then
     rm -f /etc/rc.d/rc.netbird
 fi
 
-upgradepkg --install-new /boot/config/plugins/netbird/unraid-netbird-utils-2026.03.09.1054-noarch-1.txz
+upgradepkg --install-new /boot/config/plugins/netbird/unraid-netbird-utils-v2026.03.09.1156-noarch-1.txz
 
 mkdir -p /usr/local/emhttp/plugins/netbird/bin
 tar xzf /boot/config/plugins/netbird/netbird_0.66.2_linux_amd64.tar.gz -C /usr/local/emhttp/plugins/netbird/bin
@@ -88,7 +85,7 @@ rm -f /var/log/plugins/netbird.plg
 /usr/local/emhttp/plugins/netbird/restart.sh
 
 # cleanup old versions
-rm -f $(ls /boot/config/plugins/netbird/unraid-netbird-utils-*.txz 2>/dev/null | grep -v '2026.03.09.1054')
+rm -f $(ls /boot/config/plugins/netbird/unraid-netbird-utils-*.txz 2>/dev/null | grep -v 'v2026.03.09.1156')
 rm -f $(ls /boot/config/plugins/netbird/*.tar.gz 2>/dev/null | grep -v 'netbird_0.66.2_linux_amd64')
 
 # check to see if the config file has been backed up to Unraid Connect
@@ -112,7 +109,7 @@ fi
 echo ""
 echo "----------------------------------------------------"
 echo " netbird has been installed."
-echo " Version: 2026.03.09.1054"
+echo " Version: v2026.03.09.1156"
 echo "----------------------------------------------------"
 echo ""
 ]]>
