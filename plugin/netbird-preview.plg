@@ -4,7 +4,7 @@
 <PLUGIN
   name="netbird"
   author="bstaeheli"
-  version="2026.03.09.1054"
+  version="2026.03.09.1156"
   launch="Settings/Netbird"
   pluginURL="https://raw.githubusercontent.com/bstaeheli/unraid-netbird/preview/plugin/netbird-preview.plg"
   
@@ -14,6 +14,13 @@
 
 <CHANGES>
 <![CDATA[
+
+### 2026.03.09.1156
+
+Adopt Tailscale's authentication approach:
+- UI now accessible when daemon is in NeedsLogin state
+- Display authentication link on dashboard and info page
+- Remove automatic setup key authentication (manual flow preferred)
 
 ### 2026.03.09.1054
 
@@ -43,9 +50,9 @@ For older releases, see https://github.com/bstaeheli/unraid-netbird/releases
 <SHA256>65e3e932cc4709347fd2edaff1f152bd99a116e9142fa3c75e40420374d1dc0c</SHA256>
 </FILE>
 
-<FILE Name="/boot/config/plugins/netbird/unraid-netbird-utils-2026.03.09.1054-noarch-1.txz">
-<URL>https://github.com/bstaeheli/unraid-netbird/releases/download/2026.03.09.1054/unraid-netbird-utils-2026.03.09.1054-noarch-1.txz</URL>
-<SHA256>34725f6515a5650d23ee0754a93f6acd4b1fd3e00d743ab48889fb6e6944c133</SHA256>
+<FILE Name="/boot/config/plugins/netbird/unraid-netbird-utils-2026.03.09.1156-noarch-1.txz">
+<URL>https://github.com/bstaeheli/unraid-netbird/releases/download/2026.03.09.1156/unraid-netbird-utils-2026.03.09.1156-noarch-1.txz</URL>
+<SHA256>PLACEHOLDER</SHA256>
 </FILE>
 
 <!--

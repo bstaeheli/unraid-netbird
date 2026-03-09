@@ -37,10 +37,23 @@ if ($netbirdConfig->Enable) {
         $netbirdInfo     = $netbirdInfo ?? new Info($tr);
         $netbirdDashInfo = $netbirdInfo->getDashboardInfo();
 
-        $netbird_dashboard = Utils::printDash($tr->tr("info.online"), $netbirdDashInfo->Online);
-        $netbird_dashboard .= Utils::printDash($tr->tr("info.hostname"), $netbirdDashInfo->HostName);
-        $netbird_dashboard .= Utils::printDash($tr->tr("info.fqdn"), $netbirdDashInfo->FQDN);
-        $netbird_dashboard .= Utils::printDash($tr->tr("info.ip"), $netbirdDashInfo->NetbirdIP);
+        // Check if authentication is needed
+        if ($netbirdInfo->needsLogin()) {
+            $authURL = $cli->getAuthURL();
+            if (!empty($authURL)) {
+                $authLink = '<a href="' . htmlspecialchars($authURL) . '" target="_blank">' . $tr->tr("info.auth_url_link") . '</a>';
+                $netbird_dashboard = Utils::printDash($tr->tr("info.daemon_state"), $netbirdDashInfo->DaemonState);
+                $netbird_dashboard .= Utils::printDash($tr->tr("info.auth_url"), $authLink);
+            } else {
+                $netbird_dashboard = Utils::printDash($tr->tr("info.daemon_state"), $netbirdDashInfo->DaemonState);
+                $netbird_dashboard .= "<tr><td>" . $tr->tr("warnings.not_ready") . "</td></tr>";
+            }
+        } else {
+            $netbird_dashboard = Utils::printDash($tr->tr("info.online"), $netbirdDashInfo->Online);
+            $netbird_dashboard .= Utils::printDash($tr->tr("info.hostname"), $netbirdDashInfo->HostName);
+            $netbird_dashboard .= Utils::printDash($tr->tr("info.fqdn"), $netbirdDashInfo->FQDN);
+            $netbird_dashboard .= Utils::printDash($tr->tr("info.ip"), $netbirdDashInfo->NetbirdIP);
+        }
     }
 }
 

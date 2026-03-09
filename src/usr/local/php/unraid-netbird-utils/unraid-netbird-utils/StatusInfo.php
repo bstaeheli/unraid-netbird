@@ -27,4 +27,5 @@ class StatusInfo
     public string $FQDN         = "";
     public string $PubKey       = "";
     public string $Health       = "";
+    public string $AuthURL      = "";
 }

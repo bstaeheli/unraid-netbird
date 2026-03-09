@@ -98,6 +98,8 @@ class Info
             $info->Health = $serverError;
         }
 
+        $info->AuthURL = self::strAt($status, 'authURL');
+
         return $info;
     }
 

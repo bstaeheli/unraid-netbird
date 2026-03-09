@@ -53,6 +53,11 @@ echo Utils::printRow($tr->tr("info.connected_via"), $netbirdInfo->connectedViaNe
 if ( ! empty($netbirdStatus->Health)) {
     echo Utils::printRow($tr->tr("info.health"), '<span class="error">' . htmlspecialchars($netbirdStatus->Health) . '</span>');
 }
+
+if ( ! empty($netbirdStatus->AuthURL)) {
+    $authLink = '<a href="' . htmlspecialchars($netbirdStatus->AuthURL) . '" target="_blank">' . $tr->tr("info.auth_url_link") . '</a>';
+    echo Utils::printRow($tr->tr("info.auth_url"), $authLink);
+}
 ?>
     </tbody>
 </table>
