@@ -4,5 +4,5 @@ unraid-netbird-utils:
 unraid-netbird-utils: This package provides the scripts and configuration pages to
 unraid-netbird-utils: run NetBird directly on the Unraid OS.
 unraid-netbird-utils:
-unraid-netbird-utils: https://github.com/YOUR_GITHUB_USER/unraid-netbird
+unraid-netbird-utils: https://github.com/bstaeheli/unraid-netbird
 unraid-netbird-utils:

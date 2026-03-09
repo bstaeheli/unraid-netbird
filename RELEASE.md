@@ -1,124 +1,188 @@
 # Release Guide
 
-This guide describes how to create a new release for the unraid-netbird plugin.
+Automated release process for the unraid-netbird plugin using GitHub Actions.
 
 ## Prerequisites
 
-- `gh` CLI installed and authenticated
-- Git configured with push access to the repository
-- Local `main` branch up to date
+- Git configured with push access to `main` branch
+- `vendor/bin/phpstan` and `vendor/bin/php-cs-fixer` available
+- Local `main` branch synced with remote
 
-## Release Process
+## Automated Release Workflow
 
-### 1. Prepare Local Changes
+The release process is fully automated via GitHub Actions:
 
-Check for uncommitted changes:
+1. **Release Drafter** (`.github/workflows/release-drafter.yml`): Automatically creates a draft release with timestamp version on every push to `main`
+2. **Release Builder** (`.github/workflows/release.yml`): Builds and publishes the plugin package when you publish the draft release
+
+### Step 1: Validate Code Quality
+
+Before committing changes, ensure code quality checks pass:
+
 ```bash
+# Run PHPStan static analysis
+vendor/bin/phpstan
+
+# Run PHP-CS-Fixer code style check
+vendor/bin/php-cs-fixer fix --dry-run
+# If changes needed:
+vendor/bin/php-cs-fixer fix
+```
+
+Both must pass with no errors before proceeding.
+
+### Step 2: Commit and Push Changes
+
+Stage and commit your changes using semantic commit messages:
+
+```bash
+# Verify what will be committed
 git status --short
+
+# Commit with semantic message (feat:, fix:, chore:, etc.)
+git add -A
+git commit -m "feat: your changes here"
+
+# Push to main
+git push
 ```
 
-If there are changes, commit them:
+**Important:** Use semantic commit prefixes (`feat:`, `fix:`, `chore:`) - they determine the changelog category.
+
+### Step 3: Wait for Draft Release
+
+The Release Drafter workflow will automatically:
+- Generate a timestamp-based version (e.g., `2026.03.09.1745`)
+- Create a draft release with that version
+- Populate release notes from your commit messages
+- Categorize changes (Features, Bug Fixes, Maintenance)
+
+Check the draft:
 ```bash
-git add .
-git commit -m "fix: your changes here"
+# List all releases (including drafts)
+gh release list
 ```
 
-### 2. Sync with Remote
+### Step 4: Review and Edit Release Notes
 
-Pull latest changes and push your commits:
+Open the draft release in GitHub:
+
 ```bash
-git pull --rebase origin main
-git push origin refs/heads/main
+# Open releases page in browser
+gh release list --web
 ```
 
-**Note:** Always use `refs/heads/main` when pushing due to the `main` tag conflict.
+Or visit: `https://github.com/bstaeheli/unraid-netbird/releases`
 
-### 3. Generate Version Number
+Edit the draft to:
+- Review automatically generated changelog
+- Add additional context or breaking changes
+- Verify the version number is correct
 
-Use the standard timestamp-based version format:
+### Step 5: Publish the Release
+
+Click **"Publish release"** in the GitHub UI (or use CLI):
+
 ```bash
-date +%Y.%m.%d.%H%M
+# Find the version/tag of the draft
+VERSION=$(gh release list --limit 1 | awk '{print $1}')
+
+# Publish the draft
+gh release edit $VERSION --draft=false
 ```
 
-Example output: `2026.03.09.1234`
+### Step 6: Monitor Automated Build
 
-### 4. Create GitHub Release
+The Release workflow (`.github/workflows/release.yml`) will automatically:
+1. Checkout code
+2. Build the `.txz` package with Composer dependencies
+3. Generate SHA256 checksum
+4. Upload both assets to the release
+5. Update `.plg` files with new release information
+6. Update `main` and `preview` Git tags
 
-Create a **full release** (not a pre-release or draft):
+Monitor the workflow:
 ```bash
-gh release create 2026.03.09.1234 \
-  --target main \
-  --title 2026.03.09.1234 \
-  --notes "Release 2026.03.09.1234
+# Watch the build in real-time
+gh run watch
 
-- Brief description of changes
-- Additional notes if needed"
+# Or list recent runs
+gh run list --workflow=release.yml --limit 3
 ```
 
-**Important:** Do not use `--prerelease` or `--draft` flags for production releases.
+### Step 7: Verify Release
 
-### 5. Monitor Build Pipeline
+After the workflow completes successfully:
 
-List recent workflow runs:
 ```bash
-gh run list --workflow release.yml --limit 5
+# Check release assets
+gh release view $VERSION --json assets,url
+
+# Expected assets:
+# - unraid-netbird-utils-$VERSION-noarch-1.txz
+# - unraid-netbird-utils-$VERSION-noarch-1.txz.sha256
 ```
 
-Watch the build in real-time:
+## Quick Reference
+
 ```bash
-gh run watch <RUN_ID>
+# 1. Quality checks
+vendor/bin/phpstan && vendor/bin/php-cs-fixer fix --dry-run
+
+# 2. Commit and push
+git add -A && git commit -m "feat: your changes" && git push
+
+# 3. Open releases page
+gh release list --web
+
+# 4. Publish the draft release in GitHub UI
+
+# 5. Watch the build
+gh run watch
 ```
 
-### 6. Verify Release
+## Understanding Changelog Categories
 
-Check release status and assets:
-```bash
-gh release view 2026.03.09.1234 --json isDraft,isPrerelease,assets,url
-```
+The Release Drafter automatically categorizes commits based on their prefix:
 
-Expected output:
-- `isDraft: false`
-- `isPrerelease: false`
-- Assets present:
-  - `unraid-netbird-utils-2026.03.09.1234-noarch-1.txz`
-  - `unraid-netbird-utils-2026.03.09.1234-noarch-1.txz.sha256`
+- `feat:` → 🚀 Features
+- `fix:` → 🐛 Bug Fixes  
+- `chore:`, `refactor:` → 🧰 Maintenance
 
-### 7. Verify Tags (Optional)
-
-Check that tracking tags were updated:
-```bash
-git ls-remote --tags origin refs/tags/main refs/tags/preview refs/tags/2026.03.09.1234
-```
-
-Expected behavior:
-- `refs/tags/2026.03.09.1234` points to the release commit
-- `refs/tags/preview` points to the build commit (updated for all releases)
-- `refs/tags/main` points to the build commit (updated only for non-prerelease)
+Commits with labels like `docs`, `test`, `ci` are excluded from the changelog.
 
 ## Troubleshooting
 
-### Accidentally Created a Pre-Release
+### Draft Release Not Created
 
-If you used `--prerelease` by mistake, convert it to a full release:
+If no draft appears after pushing:
+1. Check workflow runs: `gh run list --workflow=release-drafter.yml`
+2. Ensure you pushed to the `main` branch
+3. Verify `.github/workflows/release-drafter.yml` exists
 
-1. Get the release database ID:
+### Build Workflow Failed
+
+Common causes:
+- **Composer errors**: Check PHP dependencies in `composer.json`
+- **Permission issues**: Verify `GITHUB_TOKEN` has write access
+- **SSH key errors**: Check `DEPLOY_KEY` secret is configured
+
+View error details:
 ```bash
-gh release view 2026.03.09.1234 --json databaseId
+# Get the failed run ID
+RUN_ID=$(gh run list --workflow=release.yml --limit 1 --json databaseId --jq '.[0].databaseId')
+
+# View the log
+gh run view $RUN_ID --log-failed
 ```
 
-2. Update the release:
-```bash
-gh api repos/bstaeheli/unraid-netbird/releases/<DATABASE_ID> \
-  -X PATCH \
-  -f prerelease=false \
-  -f draft=false
-```
+### Release Published as Pre-Release
 
-### Push Rejected Due to Tag Conflict
+Releases are published as **pre-releases** by default (configured in `.github/release-drafter.yml`).
 
-If `git push origin main` fails with "src refspec main matches more than one":
+To convert to a stable release:
 ```bash
-git push origin refs/heads/main
+gh release edit $VERSION --prerelease=false --latest
 ```
 
 ### Build Pipeline Failed
@@ -132,6 +196,33 @@ Common issues:
 - Missing or incorrect SHA256 in `plugin/plugin.json`
 - PHP syntax errors (run `vendor/bin/php-cs-fixer fix` and `vendor/bin/phpstan`)
 - Git tag push conflicts (fixed in release.yml as of 2026.03.09)
+
+### Build Failed with `release not found`
+
+Symptom in logs:
+```bash
+release not found
+Error: Process completed with exit code 1
+```
+
+Root cause:
+- The release action reads recent releases and resolves them with `gh release view <token>`.
+- If the release title contains a `v` prefix (for example `v2026.03.09.1156`) while the tag is `2026.03.09.1156`, token parsing in the action can fail and abort changelog generation.
+
+Fix:
+1. Ensure release title equals the tag exactly (no `v` prefix):
+```bash
+gh release edit 2026.03.09.1234 --title "2026.03.09.1234"
+```
+2. Re-run the failed workflow:
+```bash
+gh run rerun <RUN_ID>
+gh run watch <RUN_ID>
+```
+
+Prevention:
+- Always create releases using `--title $VERSION` where `$VERSION` is exactly the tag.
+- Prefer `gh release create $VERSION --title $VERSION ...`.
 
 ## Quick Reference
 
