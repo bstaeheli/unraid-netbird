@@ -76,24 +76,35 @@ class Info
     {
         $status = $this->status;
 
+        // Support both old (pre-0.66) and new (0.66+) JSON schema
         /** @var array<string, mixed> $localPeer */
         $localPeer = (array)($status['localPeerState'] ?? []);
         /** @var array<string, mixed> $server */
         $server = (array)($status['serverState'] ?? []);
+        /** @var array<string, mixed> $management */
+        $management = (array)($status['management'] ?? []);
 
         $info = new StatusInfo();
 
         $info->NbVersion    = self::strAt($status, 'cliVersion', $this->tr("unknown"));
         $info->DaemonState  = self::strAt($status, 'daemonState', $this->tr("unknown"));
-        $info->LocalIP      = self::strAt($localPeer, 'IP', $this->tr("unknown"));
-        $info->FQDN         = self::strAt($localPeer, 'fqdn', $this->tr("unknown"));
-        $info->PubKey       = self::strAt($localPeer, 'pubKey', $this->tr("unknown"));
-        $info->ServerURL    = self::strAt($server, 'url', $this->tr("unknown"));
-        $info->ServerOnline = isset($server['connected'])
-            ? ($server['connected'] ? $this->tr("yes") : $this->tr("no"))
+        // New schema: netbirdIp is at top level; old schema: IP under localPeerState
+        $info->LocalIP      = self::strAt($status, 'netbirdIp') ?: self::strAt($localPeer, 'IP', $this->tr("unknown"));
+        // New schema: fqdn at top level; old schema: fqdn under localPeerState
+        $info->FQDN         = self::strAt($status, 'fqdn') ?: self::strAt($localPeer, 'fqdn', $this->tr("unknown"));
+        // New schema: publicKey at top level; old schema: pubKey under localPeerState
+        $info->PubKey       = self::strAt($status, 'publicKey') ?: self::strAt($localPeer, 'pubKey', $this->tr("unknown"));
+        // New schema: management.url; old schema: serverState.url
+        $info->ServerURL    = self::strAt($management, 'url') ?: self::strAt($server, 'url', $this->tr("unknown"));
+        // New schema: management.connected; old schema: serverState.connected
+        $mgmtConnected = $management['connected'] ?? null;
+        $srvConnected = $server['connected'] ?? null;
+        $connected = $mgmtConnected ?? $srvConnected;
+        $info->ServerOnline = ($connected !== null)
+            ? ($connected ? $this->tr("yes") : $this->tr("no"))
             : $this->tr("unknown");
 
-        $serverError = self::strAt($server, 'error');
+        $serverError = self::strAt($server, 'error') ?: self::strAt($management, 'error');
         if ( ! empty($serverError)) {
             $info->Health = $serverError;
         }
@@ -107,18 +118,21 @@ class Info
     {
         $status = $this->status;
 
+        // Support both old and new JSON schema
         /** @var array<string, mixed> $localPeer */
         $localPeer = (array)($status['localPeerState'] ?? []);
         /** @var array<string, mixed> $server */
         $server = (array)($status['serverState'] ?? []);
+        /** @var array<string, mixed> $management */
+        $management = (array)($status['management'] ?? []);
 
         $info = new ConnectionInfo();
 
         $info->HostName    = gethostname() ?: $this->tr("unknown");
-        $info->FQDN        = self::strAt($localPeer, 'fqdn', $this->tr("unknown"));
-        $info->NetbirdIP   = self::strAt($localPeer, 'IP', $this->tr("unknown"));
+        $info->FQDN        = self::strAt($status, 'fqdn') ?: self::strAt($localPeer, 'fqdn', $this->tr("unknown"));
+        $info->NetbirdIP   = self::strAt($status, 'netbirdIp') ?: self::strAt($localPeer, 'IP', $this->tr("unknown"));
         $info->DaemonState = self::strAt($status, 'daemonState', $this->tr("unknown"));
-        $info->ServerURL   = self::strAt($server, 'url', $this->tr("unknown"));
+        $info->ServerURL   = self::strAt($management, 'url') ?: self::strAt($server, 'url', $this->tr("unknown"));
         $info->AuthURL     = self::strAt($status, 'authURL');
 
         return $info;
@@ -128,14 +142,15 @@ class Info
     {
         $status = $this->status;
 
+        // Support both old and new JSON schema
         /** @var array<string, mixed> $localPeer */
         $localPeer = (array)($status['localPeerState'] ?? []);
 
         $info = new DashboardInfo();
 
         $info->HostName    = gethostname() ?: $this->tr("Unknown");
-        $info->FQDN        = self::strAt($localPeer, 'fqdn', $this->tr("Unknown"));
-        $info->NetbirdIP   = self::strAt($localPeer, 'IP', $this->tr("Unknown"));
+        $info->FQDN        = self::strAt($status, 'fqdn') ?: self::strAt($localPeer, 'fqdn', $this->tr("Unknown"));
+        $info->NetbirdIP   = self::strAt($status, 'netbirdIp') ?: self::strAt($localPeer, 'IP', $this->tr("Unknown"));
         $info->DaemonState = self::strAt($status, 'daemonState', $this->tr("Unknown"));
         $info->Online      = $this->isConnected() ? $this->tr("yes") : $this->tr("no");
 
@@ -209,9 +224,10 @@ class Info
 
     public function getNetbirdIP(): string
     {
+        // Support both old and new JSON schema
         /** @var array<string, mixed> $localPeer */
         $localPeer = (array)($this->status['localPeerState'] ?? []);
-        $ip        = self::strAt($localPeer, 'IP');
+        $ip        = self::strAt($this->status, 'netbirdIp') ?: self::strAt($localPeer, 'IP');
         // Strip CIDR prefix if present
         return explode('/', $ip)[0];
     }
