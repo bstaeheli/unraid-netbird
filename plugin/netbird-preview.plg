@@ -48,7 +48,7 @@ For older releases, see https://github.com/bstaeheli/unraid-netbird/releases
 </FILE>
 
 <FILE Name="/boot/config/plugins/netbird/unraid-netbird-utils-v2026.03.09.1156-noarch-1.txz">
-<URL>https://github.com/bstaeheli/unraid-netbird/releases/download/v2026.03.09.1156/unraid-netbird-utils-v2026.03.09.1156-noarch-1.txz</URL>
+<URL>https://github.com/bstaeheli/unraid-netbird/releases/download/2026.03.09.1156/unraid-netbird-utils-v2026.03.09.1156-noarch-1.txz</URL>
 <SHA256>48742ee133da21ed46d2f43f5179f7504ebc93425c0e0d8235bbc86067a7bb16</SHA256>
 </FILE>
 
