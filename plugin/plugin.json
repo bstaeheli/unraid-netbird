@@ -5,6 +5,6 @@
   "min": "7.0.0",
   "support": "",
   "launch": "Settings/Netbird",
-  "netbirdVersion": "netbird_0.69.0_linux_amd64",
-  "netbirdSHA256": "ebc6cbfc132da75f761e6f62cf69cc24414bc3d96b1a9375a9cb598a686bee13"
+  "netbirdVersion": "netbird_0.74.2_linux_amd64",
+  "netbirdSHA256": "c29f83efbc54c082323857ef99853971703e6230d3d7de9e045fc63cc4ebe135"
 }
